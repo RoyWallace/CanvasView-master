@@ -21,6 +21,8 @@ public class MyCircle extends RelativeLayout {
 
     public final static int white = 0xddffffff;//白色
 
+    public int orange;
+
     private int minRadius;
 
     private int radius;
@@ -32,6 +34,8 @@ public class MyCircle extends RelativeLayout {
     public int increase;
 
     private boolean animAble = false;
+
+    private boolean wtf = false;
 
     public MyCircle(Context context) {
         super(context);
@@ -48,22 +52,26 @@ public class MyCircle extends RelativeLayout {
     }
 
     private void init() {
+
+        orange = getResources().getColor(R.color.orange);
+
         setWillNotDraw(false);
 
         float density = getResources().getDisplayMetrics().density;
 
         minRadius = 0;
 
-        increase = (int) (5 * density);
+        increase = (int) (10 * density);
 
         paint = new Paint();
-        paint.setColor(black);
+        paint.setColor(orange);
         paint.setAntiAlias(true);//抗锯齿
 
     }
 
     /**
      * 设置画笔颜色
+     *
      * @param color
      */
     public void setColor(int color) {
@@ -72,6 +80,7 @@ public class MyCircle extends RelativeLayout {
 
     /**
      * 获取画笔颜色
+     *
      * @return
      */
     public int getColor() {
@@ -95,6 +104,7 @@ public class MyCircle extends RelativeLayout {
 
     /**
      * 获取圈圈圆点x坐标
+     *
      * @return
      */
     public int getCx() {
@@ -103,18 +113,19 @@ public class MyCircle extends RelativeLayout {
 
     /**
      * 获取圈圈圆点y坐标
+     *
      * @return
      */
     public int getCy() {
         return (getBottom() - getTop()) / 2;
     }
 
-    public void setCX(int cx){
-        this.cx=cx;
+    public void setCX(int cx) {
+        this.cx = cx;
     }
 
-    public void setCY(int cy){
-        this.cy=cy;
+    public void setCY(int cy) {
+        this.cy = cy;
     }
 
 
@@ -134,10 +145,10 @@ public class MyCircle extends RelativeLayout {
 
                 //开始动画
                 for (int i = minRadius; i < getDiagonal(); i = i + increase) {
-
                     try {
                         Thread.sleep(20);
                         radius = i;
+//                        paint.setColor(getResources().getColor(android.R.color.transparent));
                         postInvalidate();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -150,6 +161,7 @@ public class MyCircle extends RelativeLayout {
 
     /**
      * 获取对角线粗略估算
+     *
      * @return
      */
     public int getDiagonal() {

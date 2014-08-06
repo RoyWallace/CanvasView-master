@@ -19,7 +19,8 @@
         android:layout_height="200dp"
         android:id="@+id/view"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:background="#969600">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -27,7 +28,27 @@
             android:id="@+id/imageView"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/ic_launcher"
+            android:visibility="visible"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton2"
+            android:src="@drawable/ic_launcher"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imageView"
+            android:visibility="visible"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton"
+            android:src="@drawable/ic_launcher"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/imageView"
+            android:visibility="visible"/>
+
 
     </com.etong.canvasview_master.app.MyCircle>
 
@@ -39,23 +60,16 @@
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView"
-        android:src="@drawable/ic_launcher" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton2"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/button"
-        android:layout_marginLeft="13dp"
-        android:src="@drawable/ic_launcher" />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/imageView2"
+        android:background="@drawable/circle_background"
+        android:layout_marginTop="63dp"
+        android:layout_below="@+id/button"
+        android:layout_alignRight="@+id/view"
+        android:layout_alignEnd="@+id/view"
+        android:layout_marginRight="30dp" />
 
 
 </RelativeLayout>

@@ -1,16 +1,32 @@
 package com.etong.canvasview_master.app;
 
+import android.animation.Animator;
+import android.animation.LayoutTransition;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
 
 public class MainActivity extends ActionBarActivity {
 
     private MyCircle circle;
 
-    private int r;
+    private Button btn;
+
+    private ImageView rb;
+
+    private ImageView imageView;
+
+    private ImageButton imageButton;
+
+    private ImageButton imageButton2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,20 +37,69 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void findAllView() {
-        circle = (MyCircle) findViewById(R.id.view);
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+
+        rb = (ImageView) findViewById(R.id.imageView2);
+
+        imageView = (ImageView) findViewById(R.id.imageView);
+
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
+        imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
+
+        btn= (Button) findViewById(R.id.button);
+
+        final ObjectAnimator a = ObjectAnimator.ofFloat(rb, "translationY", 0, 50,95,135,170,200,225);
+        final ObjectAnimator b = ObjectAnimator.ofFloat(rb, "translationX", 0, 0,-5,-40,-90,-150,-255);
+
+
+        a.addListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
             @Override
-            public void onClick(View view) {
+            public void onAnimationStart(com.nineoldandroids.animation.Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(com.nineoldandroids.animation.Animator animator) {
+                rb.setVisibility(View.GONE);
                 circle.drawCircle();
+
+//                imageView.setVisibility(View.VISIBLE);
+//                imageButton.setVisibility(View.VISIBLE);
+//                imageButton2.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(com.nineoldandroids.animation.Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(com.nineoldandroids.animation.Animator animator) {
+
             }
         });
-        circle.drawCircle();
+
+        rb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        circle = (MyCircle) findViewById(R.id.view);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                a.start();
+                b.start();
+            }
+
+        });
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
