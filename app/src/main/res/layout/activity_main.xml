@@ -15,11 +15,21 @@
         android:id="@+id/textView" />
 
     <com.etong.canvasview_master.app.MyCircle
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/view"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_launcher" />
+
+    </com.etong.canvasview_master.app.MyCircle>
 
     <Button
         android:layout_width="wrap_content"
@@ -28,5 +38,24 @@
         android:id="@+id/button"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView"
+        android:src="@drawable/ic_launcher" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton2"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/button"
+        android:layout_marginLeft="13dp"
+        android:src="@drawable/ic_launcher" />
+
 
 </RelativeLayout>

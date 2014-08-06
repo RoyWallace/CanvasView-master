@@ -7,17 +7,13 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-
-import static java.lang.Math.*;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 /**
  * Created by Administrator on 14-8-5.
  */
-public class MyCircle extends View {
-
-    private Paint paint1;
-
-    private Paint paint2;
+public class MyCircle extends RelativeLayout {
 
     private Paint paint;
 
@@ -29,7 +25,13 @@ public class MyCircle extends View {
 
     private int radius;
 
+    private int cx;
+
+    private int cy;
+
     public int increase;
+
+    private boolean animAble = false;
 
     public MyCircle(Context context) {
         super(context);
@@ -46,6 +48,7 @@ public class MyCircle extends View {
     }
 
     private void init() {
+        setWillNotDraw(false);
 
         float density = getResources().getDisplayMetrics().density;
 
@@ -59,47 +62,59 @@ public class MyCircle extends View {
 
     }
 
-    public void setPaint(int color) {
+    /**
+     * 设置画笔颜色
+     * @param color
+     */
+    public void setColor(int color) {
         paint.setColor(color);
     }
 
-    public int getPaint() {
+    /**
+     * 获取画笔颜色
+     * @return
+     */
+    public int getColor() {
         return paint.getColor();
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        Log.i("etong","width: "+getWidth());
-        Log.i("etong","heigth: "+getHeight());
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        //确保view的高宽和定位已经初始化完成，然后才开始动画
+        animAble = true;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-//        canvas.drawRect(0,300,480,400,paint1);
         if (!isInEditMode()) {
-            canvas.drawCircle(getCX(), getCY(), radius, paint);
+            canvas.drawCircle(getCx(), getCy(), radius, paint);
         }
-
     }
 
-    public int getMwidth() {
-        return getRight() - getLeft();
-    }
-
-
-    public int getCX() {
+    /**
+     * 获取圈圈圆点x坐标
+     * @return
+     */
+    public int getCx() {
         return (getRight() - getLeft()) / 2;
     }
 
-    public int getCY() {
+    /**
+     * 获取圈圈圆点y坐标
+     * @return
+     */
+    public int getCy() {
         return (getBottom() - getTop()) / 2;
     }
 
-    public int getMheight() {
-        return getBottom() - getTop();
+    public void setCX(int cx){
+        this.cx=cx;
+    }
+
+    public void setCY(int cy){
+        this.cy=cy;
     }
 
 
@@ -108,13 +123,16 @@ public class MyCircle extends View {
             @Override
             public void run() {
 
-                Log.i("etong","left: "+getLeft());
-                Log.i("etong","right: "+getRight());
-                Log.i("etong","top: "+getTop());
-                Log.i("etong","bottom: "+getBottom());
-                Log.i("etong","x: "+getCX());
-                Log.i("etong","y: "+getCY());
+                //如果View高宽位置未初始化完成，线程等待
+                while (!animAble) {
+                    try {
+                        Thread.sleep(200);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
+                //开始动画
                 for (int i = minRadius; i < getDiagonal(); i = i + increase) {
 
                     try {
@@ -130,7 +148,12 @@ public class MyCircle extends View {
         }).start();
     }
 
+    /**
+     * 获取对角线粗略估算
+     * @return
+     */
     public int getDiagonal() {
-        return getMheight() + getMwidth();
+        return (getHeight() + getWidth()) / 2;
     }
+
 }

@@ -28,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
                 circle.drawCircle();
             }
         });
+        circle.drawCircle();
     }
 
 
