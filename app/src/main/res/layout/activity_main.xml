@@ -20,7 +20,7 @@
         android:id="@+id/view"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/relati_background">
+        android:background="#969600">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -65,6 +65,7 @@
         android:layout_height="30dp"
         android:id="@+id/imageView2"
         android:background="@drawable/circle_background"
+        android:layout_marginTop="63dp"
         android:layout_below="@+id/button"
         android:layout_alignRight="@+id/view"
         android:layout_alignEnd="@+id/view"
