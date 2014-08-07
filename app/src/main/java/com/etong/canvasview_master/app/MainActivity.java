@@ -63,14 +63,15 @@ public class MainActivity extends ActionBarActivity {
 
         circleCanvas = (CircleCanvasView) findViewById(R.id.view);
         circleCanvas.setMeteor(rb);
-        circleCanvas.setStarNumber(5);
+        circleCanvas.setKnockPoint(200,100);
+//        circleCanvas.setStarNumber(2);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 //                a.start();
 //                b.start();
-//            circleCanvas.startMeteorAnim();
+            circleCanvas.startMeteorAnim();
 
             }
 

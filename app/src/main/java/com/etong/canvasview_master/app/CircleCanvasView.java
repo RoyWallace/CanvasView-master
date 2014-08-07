@@ -74,6 +74,21 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
     private View meteor;
 
     /**
+     * 流星撞击点x轴坐标
+     */
+    private int kx;
+
+    /**
+     * 流星撞击点y轴坐标
+     */
+    private int ky;
+
+    /**
+     * 是否自定义流星撞击点
+     */
+    private boolean UseCustomPonit = false;
+
+    /**
      * 贝塞尔曲线动画对象
      */
     private ArcTranslateAnimation arcAnim;
@@ -121,11 +136,43 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
     }
 
     /**
+     * 设置流星撞击点，相对画布的坐标
      *
+     * @param kx
+     * @param ky
+     */
+    public void setKnockPoint(int kx, int ky) {
+        if (kx < 0 || ky < 0) {
+            throw new IllegalArgumentException("kx or ky can not be less than zero");
+        }
+        this.kx = kx;
+        this.ky = ky;
+        this.UseCustomPonit = true;
+    }
+
+    /**
+     * 获得撞击点x轴坐标
+     *
+     * @return
+     */
+    public int getKnockPointX() {
+        return UseCustomPonit ? (kx > getWidth() ? getWidth() : kx) : getCx();
+    }
+
+    /**
+     * 获得撞击点y轴坐标
+     *
+     * @return
+     */
+    public int getKnockPointY() {
+        return UseCustomPonit ? (ky > getHeight() ? getHeight() : ky) : getCy();
+    }
+
+    /**
      * @param number
      */
-    public void setStarNumber(int number){
-        this.starNumber=number;
+    public void setStarNumber(int number) {
+        this.starNumber = number;
     }
 
     /**
@@ -134,7 +181,7 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
      * @return
      */
     private int getMeteorTranslateX() {
-        return getMeteorTranslate(getCx() + getLeft(), meteor.getLeft(), meteor.getWidth());
+        return getMeteorTranslate(getKnockPointX() + getLeft(), meteor.getLeft(), meteor.getWidth());
     }
 
     /**
@@ -143,7 +190,7 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
      * @return
      */
     private int getMeteorTranslateY() {
-        return getMeteorTranslate(getCy() + getTop(), meteor.getTop(), meteor.getWidth());
+        return getMeteorTranslate(getKnockPointY() + getTop(), meteor.getTop(), meteor.getWidth());
     }
 
     /**
@@ -221,28 +268,43 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        //为了UI编辑界面拖动的控件可以看，xml编辑模式下，此部分代码不执行。
         if (!isInEditMode()) {
-
-            if(starNumber<2){
-                canvas.drawCircle(getCx(), getCy(), radius, paint);
-            }else{
-                for(int i=0; i<starNumber; i++) {
+            if (starNumber < 2) {//画出单个圈圈的动画
+                canvas.drawCircle(getKnockPointX(), getKnockPointY(), radius, paint);
+            } else {//画出多个圈圈的动画
+                for (int i = 0; i < starNumber; i++) {
                     canvas.drawCircle(randomCx(), randomCy(), radius, paint);
                 }
             }
         }
     }
 
-    private int randomCx(){
+    /**
+     * 随机产生圆点x轴坐标
+     *
+     * @return
+     */
+    private int randomCx() {
         return randomCenter(getWidth());
     }
 
-    private int randomCy(){
+    /**
+     * 随机产生圆点x轴坐标
+     *
+     * @return
+     */
+    private int randomCy() {
         return randomCenter(getHeight());
     }
 
-    private int randomCenter(int scope){
-        return (int)(Math.random() * scope);
+    /**
+     * 随机产生圆点坐标
+     *
+     * @return
+     */
+    private int randomCenter(int scope) {
+        return (int) (Math.random() * scope);
     }
 
     /**
@@ -250,7 +312,7 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
      *
      * @return
      */
-    public int getCx() {
+    private int getCx() {
         return (getRight() - getLeft()) / 2;
     }
 
@@ -259,18 +321,13 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
      *
      * @return
      */
-    public int getCy() {
+    private int getCy() {
         return (getBottom() - getTop()) / 2;
     }
 
-    public void setCX(int cx) {
-        this.cx = cx;
-    }
-
-    public void setCY(int cy) {
-        this.cy = cy;
-    }
-
+    /**
+     * 用线程改变圈圈大小，通知主线程画出圈圈
+     */
     public void drawCircle() {
         new Thread(new Runnable() {
             @Override
@@ -279,14 +336,14 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
                 //如果View高宽位置未初始化完成，线程等待
                 while (!animAble) {
                     try {
-                        Thread.sleep(200);
+                        Thread.sleep(100);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
 
                 //开始动画
-                for (radius = minRadius; radius < getDiagonal(); radius = radius + increase) {
+                for (radius = minRadius; radius < getMaxRadius(); radius = radius + increase) {
                     try {
                         Thread.sleep(20);
                         postInvalidate();
@@ -305,13 +362,22 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
     }
 
     /**
-     * 获取对角线粗略估算
+     * 获取圈圈最大半径
      *
      * @return
      */
-    public int getDiagonal() {
-        return (getHeight() + getWidth()) / 2;
+    public int getMaxRadius() {
+        return UseCustomPonit ? getDiagonal() : getDiagonal() / 2;
     }
+
+    /**
+     * 计算画布对角线长度
+     * @return
+     */
+    public int getDiagonal() {
+        return (int) Math.sqrt(Math.pow((double) getHeight(), 2) + Math.pow((double) getWidth(), 2));
+    }
+
 
     @Override
     public void onAnimationStart(Animation animation) {
