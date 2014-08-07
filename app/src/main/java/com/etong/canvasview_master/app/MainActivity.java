@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -50,6 +51,33 @@ public class MainActivity extends ActionBarActivity {
         final ObjectAnimator a = ObjectAnimator.ofFloat(rb, "translationY", 0, 50,95,135,170,200,225);
         final ObjectAnimator b = ObjectAnimator.ofFloat(rb, "translationX", 0, 0,-5,-40,-90,-150,-255);
 
+        final ArcTranslateAnimation arcAnim = new ArcTranslateAnimation(0,-160,0,180);
+
+        arcAnim.setDuration(500);
+
+
+        arcAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                rb.setVisibility(View.GONE);
+                circle.drawCircle();
+
+//                imageView.setVisibility(View.VISIBLE);
+//                imageButton.setVisibility(View.VISIBLE);
+//                imageButton2.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
 
         a.addListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
             @Override
@@ -89,8 +117,10 @@ public class MainActivity extends ActionBarActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                a.start();
-                b.start();
+//                a.start();
+//                b.start();
+
+                rb.startAnimation(arcAnim);
             }
 
         });
