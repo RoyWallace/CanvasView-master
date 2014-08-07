@@ -4,9 +4,11 @@ import android.animation.Animator;
 import android.animation.LayoutTransition;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,7 +18,7 @@ import com.nineoldandroids.animation.ValueAnimator;
 
 public class MainActivity extends ActionBarActivity {
 
-    private MyCircle circle;
+    private CircleCanvasView circleCanvas;
 
     private Button btn;
 
@@ -48,35 +50,7 @@ public class MainActivity extends ActionBarActivity {
         btn= (Button) findViewById(R.id.button);
 
         final ObjectAnimator a = ObjectAnimator.ofFloat(rb, "translationY", 0, 50,95,135,170,200,225);
-        final ObjectAnimator b = ObjectAnimator.ofFloat(rb, "translationX", 0, 0,-5,-40,-90,-150,-255);
-
-
-        a.addListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(com.nineoldandroids.animation.Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(com.nineoldandroids.animation.Animator animator) {
-                rb.setVisibility(View.GONE);
-                circle.drawCircle();
-
-//                imageView.setVisibility(View.VISIBLE);
-//                imageButton.setVisibility(View.VISIBLE);
-//                imageButton2.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationCancel(com.nineoldandroids.animation.Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(com.nineoldandroids.animation.Animator animator) {
-
-            }
-        });
+        final ObjectAnimator b = ObjectAnimator.ofFloat(rb, "translationX", 0, 0,-5,-40,-90,-150,-225);
 
         rb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,12 +59,19 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        circle = (MyCircle) findViewById(R.id.view);
+
+
+        circleCanvas = (CircleCanvasView) findViewById(R.id.view);
+        circleCanvas.setMeteor(rb);
+        circleCanvas.setStarNumber(5);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                a.start();
-                b.start();
+
+//                a.start();
+//                b.start();
+//            circleCanvas.startMeteorAnim();
+
             }
 
         });
