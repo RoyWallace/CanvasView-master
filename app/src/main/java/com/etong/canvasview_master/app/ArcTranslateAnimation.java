@@ -4,6 +4,7 @@ package com.etong.canvasview_master.app;
  * Created by Administrator on 14-8-7.
  */
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
@@ -30,6 +31,9 @@ public class ArcTranslateAnimation extends Animation {
     private PointF mStart;
     private PointF mControl;
     private PointF mEnd;
+
+    private float dx;
+    private float dy;
 
     /**
      * Constructor to use when building a ArcTranslateAnimation from code
@@ -108,9 +112,9 @@ public class ArcTranslateAnimation extends Animation {
     }
 
     @Override
-    protected void applyTransformation(float interpolatedTime, Transformation t) {
-        float dx = calcBezier(interpolatedTime, mStart.x, mControl.x, mEnd.x);
-        float dy = calcBezier(interpolatedTime, mStart.y, mControl.y, mEnd.y);
+    public void applyTransformation(float interpolatedTime, Transformation t) {
+        this.dx = calcBezier(interpolatedTime, mStart.x, mControl.x, mEnd.x);
+        this.dy = calcBezier(interpolatedTime, mStart.y, mControl.y, mEnd.y);
 
         t.getMatrix().setTranslate(dx, dy);
     }
@@ -153,6 +157,14 @@ public class ArcTranslateAnimation extends Animation {
         return Math.round((Math.pow((1 - interpolatedTime), 2) * p0)
                 + (2 * (1 - interpolatedTime) * interpolatedTime * p1)
                 + (Math.pow(interpolatedTime, 2) * p2));
+    }
+
+    public float getDx(){
+        return dx;
+    }
+
+    public float getDy(){
+        return dy;
     }
 
 }

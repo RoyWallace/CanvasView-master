@@ -59,11 +59,9 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-
-
         circleCanvas = (CircleCanvasView) findViewById(R.id.view);
         circleCanvas.setMeteor(rb);
-        circleCanvas.setKnockPoint(200,100);
+//        circleCanvas.setKnockPoint(200,100);
 //        circleCanvas.setStarNumber(2);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
