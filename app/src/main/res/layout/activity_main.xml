@@ -8,68 +8,9 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.etong.canvasview_master.app.MainActivity">
 
-    <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
-
-    <com.etong.canvasview_master.app.CircleCanvasView
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/view"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:background="#969600">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_launcher"
-            android:visibility="visible"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton2"
-            android:src="@drawable/ic_launcher"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/imageView"
-            android:visibility="visible"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
-            android:src="@drawable/ic_launcher"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/imageView"
-            android:visibility="visible"/>
-
-
-    </com.etong.canvasview_master.app.CircleCanvasView>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true" />
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/imageView2"
-        android:background="@drawable/circle_background"
-        android:layout_marginTop="63dp"
-        android:layout_below="@+id/button"
-        android:layout_alignRight="@+id/view"
-        android:layout_alignEnd="@+id/view"
-        android:layout_marginRight="30dp" />
-
+        android:layout_height="match_parent"
+        android:id="@+id/android.R.id.list"></ListView>
 
 </RelativeLayout>
