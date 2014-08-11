@@ -6,7 +6,13 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.Transformation;
 import android.widget.RelativeLayout;
 
 /**
@@ -60,7 +66,7 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
     /**
      * 扩散量单位
      */
-    public int increase;
+    public float increase;
 
     /**
      * 动画是否可以启用
@@ -105,9 +111,9 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
     private Circle mCircle;
 
 
-    public final static int arcAnimTime =500;
+    public final static int arcAnimTime = 5000;
 
-    public final static int refreshTime =20;
+    public final static int refreshTime = 50;
 
     public long arcAnimStartTime;
 
@@ -262,7 +268,7 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
         increase = (int) (8 * density);
 
         paint = new Paint();
-        paint.setColor(orange);
+        paint.setColor(white);
         paint.setAntiAlias(true);//抗锯齿
 
     }
@@ -357,6 +363,38 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
         return (getBottom() - getTop()) / 2;
     }
 
+    public void boom(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                //如果View高宽位置未初始化完成，线程等待
+                while (!animAble) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                float input = arcAnimTime/refreshTime;
+                //开始动画
+                for (int i = refreshTime; i < arcAnimTime; i = i + refreshTime) {
+                    try {
+                        increase = new AccelerateDecelerateInterpolator().getInterpolation(input);
+                        Thread.sleep(refreshTime);
+                        //执行circle放大动画
+                        mCircle.Zoom(increase);
+                        postInvalidate();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }).start();
+    }
+
     /**
      * 用线程改变圈圈大小，通知主线程画出圈圈
      */
@@ -374,19 +412,20 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
                     }
                 }
 
-                //开始动画的时间
-                arcAnimStartTime = System.currentTimeMillis();
+
+                float increase = (float)Math.abs(maxRadius-minRadius) / arcAnimTime * refreshTime;
+                Log.i("etong","maxRadius: "+maxRadius);
                 //开始动画
-                for (int i = refreshTime; i < arcAnimTime; i = i + refreshTime) {
+                for (int i = 100; i < arcAnimTime; i = i + refreshTime) {
                     try {
                         Thread.sleep(refreshTime);
                         //执行circle放大动画
-                        mCircle.Zoom(minRadius, maxRadius, arcAnimTime / refreshTime);
+//                        mCircle.Zoom(increase);
+                        float interpolatedTime = (float)i / arcAnimTime;
+                        AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
+                        interpolatedTime = interpolator.getInterpolation(interpolatedTime);
 
-                        long currentTime = System.currentTimeMillis();
-                        float interpolatedTime = ((float)(currentTime - arcAnimStartTime) / arcAnimTime);
-                        interpolatedTime = interpolatedTime < 1 ? interpolatedTime : 1;
-                        Log.i("etong","interpolateTime: "+interpolatedTime);
+//                        mCircle.moveTo(((ArcTranslateAnimation)(meteor.getAnimation())).getInterpolatorTime(), getMeteorStartX(), getKnockPointX(), getMeteorStartY(), getKnockPointY());
                         mCircle.moveTo(interpolatedTime, getMeteorStartX(), getKnockPointX(), getMeteorStartY(), getKnockPointY());
                         postInvalidate();
                     } catch (Exception e) {

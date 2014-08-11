@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleCanvasLayout">
+        <attr name="maxRadius" format="dimension" />
+        <attr name="cx" format="dimension" />
+        <attr name="cy" format="dimension" />
+        <attr name="circlePosition">
+            <enum name="left_top" value="1" />
+            <enum name="center_top" value="2" />
+            <enum name="right_top" value="3" />
+            <enum name="left_center" value="4" />
+            <enum name="center" value="5" />
+            <enum name="right_center" value="6" />
+            <enum name="left_bottom" value="7" />
+            <enum name="center_bottom" value="8" />
+            <enum name="right_bottom" value="9" />
+        </attr>
+        <attr name="circleColor" format="color" />
+        <attr name="duration" format="integer" />
+    </declare-styleable>
+
+</resources>

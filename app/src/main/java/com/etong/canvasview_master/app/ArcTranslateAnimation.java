@@ -35,6 +35,8 @@ public class ArcTranslateAnimation extends Animation {
     private float dx;
     private float dy;
 
+    private float interpolatorTime;
+
     /**
      * Constructor to use when building a ArcTranslateAnimation from code
      *
@@ -113,6 +115,9 @@ public class ArcTranslateAnimation extends Animation {
 
     @Override
     public void applyTransformation(float interpolatedTime, Transformation t) {
+
+        Log.i("etong","inter: "+interpolatedTime);
+        interpolatorTime = interpolatedTime;
         this.dx = calcBezier(interpolatedTime, mStart.x, mControl.x, mEnd.x);
         this.dy = calcBezier(interpolatedTime, mStart.y, mControl.y, mEnd.y);
 
@@ -165,6 +170,10 @@ public class ArcTranslateAnimation extends Animation {
 
     public float getDy(){
         return dy;
+    }
+
+    public float getInterpolatorTime(){
+        return interpolatorTime;
     }
 
 }

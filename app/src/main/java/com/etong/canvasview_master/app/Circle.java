@@ -46,6 +46,11 @@ public class Circle {
         Log.i("etong","r: "+radius);
     }
 
+    public void Zoom(float increase) {
+        this.radius = radius + increase;
+        Log.i("etong","r: "+radius);
+    }
+
     public float getCx() {
         return cx;
     }
