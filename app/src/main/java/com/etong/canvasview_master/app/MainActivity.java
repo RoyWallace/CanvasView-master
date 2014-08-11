@@ -70,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
 
 //                a.start();
 //                b.start();
-//            circleCanvas.startMeteorAnim();
+            circleCanvas.startMeteorAnim();
 
             }
 

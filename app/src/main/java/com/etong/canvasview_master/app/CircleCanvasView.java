@@ -164,9 +164,11 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
      */
     private void initMeteorAnim() {
 
-        arcAnim = new ArcTranslateAnimation(0, getMeteorTranslateX(), 0, getMeteorTranslateY());
-        arcAnim.setDuration(500);
-        arcAnim.setAnimationListener(this);
+        if(isInEditMode()) {
+            arcAnim = new ArcTranslateAnimation(0, getMeteorTranslateX(), 0, getMeteorTranslateY());
+            arcAnim.setDuration(500);
+            arcAnim.setAnimationListener(this);
+        }
     }
 
     public void startMeteorAnim() {
