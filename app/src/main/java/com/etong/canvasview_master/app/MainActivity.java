@@ -25,29 +25,6 @@ public class MainActivity extends ListActivity {
 
         ListView listView = getListView();
         listView.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,str));
-
-<<<<<<< HEAD
-            }
-        });
-
-
-
-        circleCanvas = (CircleCanvasView) findViewById(R.id.view);
-        circleCanvas.setMeteor(rb);
-        circleCanvas.setStarNumber(5);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-//                a.start();
-//                b.start();
-            circleCanvas.startMeteorAnim();
-
-            }
-
-        });
-=======
->>>>>>> origin/master
     }
 
     @Override

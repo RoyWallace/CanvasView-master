@@ -243,20 +243,12 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
      * 初始化流星的动画
      */
     private void initMeteorAnim() {
-<<<<<<< HEAD
-
-        if(isInEditMode()) {
-            arcAnim = new ArcTranslateAnimation(0, getMeteorTranslateX(), 0, getMeteorTranslateY());
-            arcAnim.setDuration(500);
-            arcAnim.setAnimationListener(this);
-        }
-=======
         minRadius = meteor.getWidth() / 2;
         maxRadius = UseCustomPonit ? getDiagonal() : getDiagonal() / 2;
         arcAnim = new ArcTranslateAnimation(0, getMeteorTranslateX(), 0, getMeteorTranslateY());
         arcAnim.setDuration(arcAnimTime);
         arcAnim.setAnimationListener(this);
->>>>>>> origin/master
+
     }
 
     public void startMeteorAnim() {
