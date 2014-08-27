@@ -35,20 +35,15 @@ public class Circle {
     public void moveTo(float interpolatedTime, float startX, float endX, float startY, float endY) {
         this.cx = AnimUtil.calcBezier(interpolatedTime, startX, startX, endX);
         this.cy = AnimUtil.calcBezier(interpolatedTime, startY, endY, endY);
-        Log.i("etong","cx:　"+cx);
-        Log.i("etong","cy:　"+cy);
     }
 
     public void Zoom(float fromR,float toR,float time) {
         float increase = Math.abs(toR-fromR)/time;
         this.radius = radius + increase;
-        Log.i("etong","increase: "+increase);
-        Log.i("etong","r: "+radius);
     }
 
-    public void Zoom(float increase) {
-        this.radius = radius + increase;
-        Log.i("etong","r: "+radius);
+    public void Zoom(float radius) {
+        this.radius = radius;
     }
 
     public float getCx() {

@@ -111,9 +111,9 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
     private Circle mCircle;
 
 
-    public final static int arcAnimTime = 5000;
+    public final static int arcAnimTime = 300;
 
-    public final static int refreshTime = 50;
+    public final static int refreshTime = 20;
 
     public long arcAnimStartTime;
 
@@ -413,18 +413,18 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
                     }
                 }
 
-
-                float increase = (float)Math.abs(maxRadius-minRadius) / arcAnimTime * refreshTime;
-                Log.i("etong","maxRadius: "+maxRadius);
                 //开始动画
-                for (int i = 100; i < arcAnimTime; i = i + refreshTime) {
+                for (int i = 80; i < arcAnimTime; i = i + refreshTime) {
                     try {
                         Thread.sleep(refreshTime);
-                        //执行circle放大动画
-//                        mCircle.Zoom(increase);
+
                         float interpolatedTime = (float)i / arcAnimTime;
                         AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
                         interpolatedTime = interpolator.getInterpolation(interpolatedTime);
+
+                        float radius = maxRadius * interpolatedTime;
+                        //执行circle放大动画
+                        mCircle.Zoom(radius);
 
 //                        mCircle.moveTo(((ArcTranslateAnimation)(meteor.getAnimation())).getInterpolatorTime(), getMeteorStartX(), getKnockPointX(), getMeteorStartY(), getKnockPointY());
                         mCircle.moveTo(interpolatedTime, getMeteorStartX(), getKnockPointX(), getMeteorStartY(), getKnockPointY());

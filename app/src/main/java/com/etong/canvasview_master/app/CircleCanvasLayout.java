@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
 
+import com.nineoldandroids.animation.ValueAnimator;
+
 /**
  * Created by Administrator on 14-8-11.
  */
@@ -46,7 +48,7 @@ public class CircleCanvasLayout extends RelativeLayout {
 
     public final static int CENTER_BOTTOM = 8;
 
-    public final static  int RIGHT_BOTTOM = 9;
+    public final static int RIGHT_BOTTOM = 9;
 
     private int circlePosition;
 
@@ -148,7 +150,6 @@ public class CircleCanvasLayout extends RelativeLayout {
     }
 
 
-
     private void init() {
 
         duration = DF_DURATION;
@@ -163,11 +164,12 @@ public class CircleCanvasLayout extends RelativeLayout {
 
     }
 
-    public void setCirclePosition(int position){
+    public void setCirclePosition(int position) {
         this.circlePosition = position;
+        setCenterPosition();
     }
 
-    public void setPosition(int x,int y){
+    public void setPosition(int x, int y) {
         this.cx = x;
         this.cy = y;
     }
@@ -190,20 +192,15 @@ public class CircleCanvasLayout extends RelativeLayout {
         return paint.getColor();
     }
 
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-
-        //设置圈圈最大半径
-        maxRadius = getDiagonal();
+    private void setCenterPosition(){
         //设置圈圈圆心位置
-        switch (circlePosition){
+        switch (circlePosition) {
             case LEFT_TOP:
                 cx = 0;
                 cy = 0;
                 break;
             case CENTER_TOP:
-                cx = getWidth()/2;
+                cx = getWidth() / 2;
                 cy = 0;
                 break;
             case RIGHT_TOP:
@@ -212,22 +209,22 @@ public class CircleCanvasLayout extends RelativeLayout {
                 break;
             case LEFT_CENTER:
                 cx = 0;
-                cy = getHeight()/2;
+                cy = getHeight() / 2;
                 break;
             case CENTER:
-                cx = getWidth()/2;
-                cy = getHeight()/2;
+                cx = getWidth() / 2;
+                cy = getHeight() / 2;
                 break;
             case RIGHT_CENTER:
                 cx = getWidth();
-                cy = getHeight()/2;
+                cy = getHeight() / 2;
                 break;
             case LEFT_BOTTOM:
                 cx = 0;
                 cy = getHeight();
                 break;
             case CENTER_BOTTOM:
-                cx = getWidth()/2;
+                cx = getWidth() / 2;
                 cy = getHeight();
                 break;
             case RIGHT_BOTTOM:
@@ -235,6 +232,15 @@ public class CircleCanvasLayout extends RelativeLayout {
                 cy = getHeight();
                 break;
         }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+
+        //设置圈圈最大半径
+        maxRadius = getDiagonal();
+        setCenterPosition();
         //确保view必须数据初始化完成，然后才开始动画
         animAble = true;
     }
@@ -276,40 +282,37 @@ public class CircleCanvasLayout extends RelativeLayout {
     }
 
     /**
-     * 病毒扩散
+     * 放大
      */
-    public void boom() {
-        new Thread(new Runnable() {
+    public void ZoomIn() {
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(minRadius, (int) maxRadius);
+        valueAnimator.setDuration(500);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void run() {
-
-                //如果View高宽位置未初始化完成，线程等待
-                while (!animAble) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                //开始动画
-                for (int i = refreshTime; i < duration; i = i + refreshTime) {
-                    try {
-
-                        Thread.sleep(refreshTime);
-                        increase = new AccelerateDecelerateInterpolator().getInterpolation((float)i/duration);
-                        increase = increase * (maxRadius - minRadius);
-
-                        //执行circle放大动画
-                        radius = radius + increase;
-                        postInvalidate();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                Integer value = (Integer) valueAnimator.getAnimatedValue();
+                radius = minRadius + value;
+                invalidate();
             }
-        }).start();
+        });
+        valueAnimator.start();
+    }
+
+    /**
+     * 缩小
+     */
+    public void ZoomOut() {
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(minRadius, (int) maxRadius);
+        valueAnimator.setDuration(500);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                Integer value = (Integer) valueAnimator.getAnimatedValue();
+                radius = maxRadius - value;
+                invalidate();
+            }
+        });
+        valueAnimator.start();
     }
 
     public void starFall() {
@@ -318,9 +321,10 @@ public class CircleCanvasLayout extends RelativeLayout {
 
     /**
      * 自定义圈圈半径
+     *
      * @param radius
      */
-    public void setMaxRadius(float radius){
+    public void setMaxRadius(int radius) {
         this.maxRadius = radius;
     }
 
