@@ -86,6 +86,7 @@ public class MeteorActivity extends ActionBarActivity implements View.OnClickLis
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            circleCanvas.ZoomOut();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -97,5 +98,11 @@ public class MeteorActivity extends ActionBarActivity implements View.OnClickLis
             Log.i("etong","click");
             circleCanvas.startMeteorAnim();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        circleCanvas.ZoomOut();
     }
 }

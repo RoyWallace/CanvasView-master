@@ -60,7 +60,8 @@
         android:layout_above="@+id/view"
         android:layout_marginBottom="-15dp"
         android:layout_alignRight="@+id/view"
-        android:src="@android:drawable/ic_menu_add"
+        android:scaleType="center"
+        android:src="@drawable/add"
         android:layout_alignEnd="@+id/view"
         android:layout_marginRight="30dp" />
 

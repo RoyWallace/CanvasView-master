@@ -258,6 +258,8 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
 
         ObjectAnimator xAnim = ObjectAnimator.ofFloat(meteor,"translationX",getMeteorTranslateX());
         ObjectAnimator yAnim = ObjectAnimator.ofFloat(meteor,"translationY",getMeteorTranslateY());
+        Log.i("etong","translation X: "+(-getMeteorTranslateX()));
+        Log.i("etong","translation Y: "+(-getMeteorTranslateY()));
 
         animatorSet = new AnimatorSet();
         animatorSet.playTogether(xAnim,yAnim);
@@ -432,6 +434,37 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
             }
         });
         valueAnimator.start();
+        valueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                Log.i("etong","translation X: "+(-getMeteorTranslateX()));
+                Log.i("etong","translation Y: "+(-getMeteorTranslateY()));
+                ObjectAnimator xAnim = ObjectAnimator.ofFloat(meteor,"translationX",0);
+                ObjectAnimator yAnim = ObjectAnimator.ofFloat(meteor,"translationY",0);
+
+                AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.playTogether(xAnim,yAnim);
+
+                meteor.setVisibility(View.VISIBLE);
+
+                animatorSet.start();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
     }
 
     public void boom(){
