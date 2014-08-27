@@ -98,17 +98,17 @@ public class CircleCanvasLayout extends RelativeLayout {
      */
     private float density;
 
-    private int duration;
+    /**
+     * 缩小动画的时间
+     */
+    private long outDuration = 300;
+
+    /**
+     * 放大动画执行时间
+     */
+    private long inDuration = 500;
 
     public final static int refreshTime = 20;
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
 
     public float getCx() {
         return cx;
@@ -124,6 +124,22 @@ public class CircleCanvasLayout extends RelativeLayout {
 
     public void setCy(float cy) {
         this.cy = cy;
+    }
+
+    public long getOutDuration() {
+        return outDuration;
+    }
+
+    public void setOutDuration(long outDuration) {
+        this.outDuration = outDuration;
+    }
+
+    public long getInDuration() {
+        return inDuration;
+    }
+
+    public void setInDuration(long inDuration) {
+        this.inDuration = inDuration;
     }
 
     public CircleCanvasLayout(Context context) {
@@ -151,8 +167,6 @@ public class CircleCanvasLayout extends RelativeLayout {
 
 
     private void init() {
-
-        duration = DF_DURATION;
 
         setWillNotDraw(false);
 
@@ -286,7 +300,7 @@ public class CircleCanvasLayout extends RelativeLayout {
      */
     public void ZoomIn() {
         ValueAnimator valueAnimator = ValueAnimator.ofInt(minRadius, (int) maxRadius);
-        valueAnimator.setDuration(500);
+        valueAnimator.setDuration(inDuration);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -303,7 +317,7 @@ public class CircleCanvasLayout extends RelativeLayout {
      */
     public void ZoomOut() {
         ValueAnimator valueAnimator = ValueAnimator.ofInt(minRadius, (int) maxRadius);
-        valueAnimator.setDuration(500);
+        valueAnimator.setDuration(outDuration);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
