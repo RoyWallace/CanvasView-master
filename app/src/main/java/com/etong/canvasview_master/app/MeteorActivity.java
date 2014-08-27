@@ -2,20 +2,22 @@ package com.etong.canvasview_master.app;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationSet;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
-public class MeteorActivity extends ActionBarActivity {
+public class MeteorActivity extends ActionBarActivity implements View.OnClickListener {
 
     private CircleCanvasView circleCanvas;
-
-    private Button btn;
 
     private ImageView rb;
 
@@ -25,12 +27,18 @@ public class MeteorActivity extends ActionBarActivity {
 
     private ImageButton imageButton2;
 
+    AnimatorSet animatorSet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meteor);
 
         findAllView();
+        
+        setupAnim();
+
+        setAlllistener();
     }
 
     private void findAllView() {
@@ -42,33 +50,24 @@ public class MeteorActivity extends ActionBarActivity {
         imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
 
-        btn= (Button) findViewById(R.id.button);
-
-        final ObjectAnimator a = ObjectAnimator.ofFloat(rb, "translationY", 0, 50,95,135,170,200,225);
-        final ObjectAnimator b = ObjectAnimator.ofFloat(rb, "translationX", 0, 0,-5,-40,-90,-150,-225);
-
-        rb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         circleCanvas = (CircleCanvasView) findViewById(R.id.view);
         circleCanvas.setMeteor(rb);
 //        circleCanvas.setKnockPoint(200,100);
 //        circleCanvas.setStarNumber(2);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    }
 
-//                a.start();
-//                b.start();
-            circleCanvas.startMeteorAnim();
+    private void setupAnim() {
+        ObjectAnimator xAnimator = ObjectAnimator.ofFloat(rb, "translationX", -100f);
+        ObjectAnimator yAnimator = ObjectAnimator.ofFloat(rb, "translationY", 100f);
 
-            }
+        animatorSet = new AnimatorSet();
+        animatorSet.setDuration(500);
+        animatorSet.playTogether(xAnimator,yAnimator);
 
-        });
+    }
+
+    private void setAlllistener(){
+        rb.setOnClickListener(this);
     }
 
 
@@ -92,4 +91,11 @@ public class MeteorActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view == rb){
+            Log.i("etong","click");
+            circleCanvas.startMeteorAnim();
+        }
+    }
 }

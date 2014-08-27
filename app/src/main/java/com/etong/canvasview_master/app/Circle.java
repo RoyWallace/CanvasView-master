@@ -28,7 +28,7 @@ public class Circle {
         this.paint = paint;
     }
 
-    public void onDraw(Canvas canvas) {
+    public void draw(Canvas canvas) {
         canvas.drawCircle(cx, cy, radius, paint);
     }
 

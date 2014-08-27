@@ -15,6 +15,11 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 import android.widget.RelativeLayout;
 
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
+
 /**
  * Created by Administrator on 14-8-7.
  */
@@ -116,6 +121,8 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
     public final static int refreshTime = 20;
 
     public long arcAnimStartTime;
+
+    public AnimatorSet animatorSet;
 
 
     public CircleCanvasView(Context context) {
@@ -249,10 +256,39 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
         arcAnim.setDuration(arcAnimTime);
         arcAnim.setAnimationListener(this);
 
+        ObjectAnimator xAnim = ObjectAnimator.ofFloat(meteor,"translationX",getMeteorTranslateX());
+        ObjectAnimator yAnim = ObjectAnimator.ofFloat(meteor,"translationY",getMeteorTranslateY());
+
+        animatorSet = new AnimatorSet();
+        animatorSet.playTogether(xAnim,yAnim);
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                ZoomIn();
+                meteor.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+
     }
 
     public void startMeteorAnim() {
-        meteor.startAnimation(arcAnim);
+//        meteor.startAnimation(arcAnim);
+        animatorSet.start();
     }
 
 
@@ -269,7 +305,7 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
         increase = (int) (8 * density);
 
         paint = new Paint();
-        paint.setColor(white);
+        paint.setColor(orange);
         paint.setAntiAlias(true);//抗锯齿
 
     }
@@ -309,8 +345,8 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
         //为了UI编辑界面拖动的控件可以看，xml编辑模式下，此部分代码不执行。
         if (!isInEditMode()) {
             if (starNumber < 2) {//画出单个圈圈的动画
-//                canvas.drawCircle(getKnockPointX(), getKnockPointY(), radius, paint);
-                mCircle.onDraw(canvas);
+                canvas.drawCircle(getKnockPointX(), getKnockPointY(), radius, paint);
+//                mCircle.draw(canvas);
             } else {//画出多个圈圈的动画
                 for (int i = 0; i < starNumber; i++) {
                     canvas.drawCircle(randomCx(), randomCy(), radius, paint);
@@ -362,6 +398,40 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
      */
     private int getCy() {
         return (getBottom() - getTop()) / 2;
+    }
+
+    /**
+     * 放大
+     */
+    public void ZoomIn() {
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(minRadius, maxRadius);
+        valueAnimator.setDuration(500);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                Integer value = (Integer) valueAnimator.getAnimatedValue();
+                radius = minRadius + value;
+                invalidate();
+            }
+        });
+        valueAnimator.start();
+    }
+
+    /**
+     * 缩小
+     */
+    public void ZoomOut() {
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(minRadius, (int) maxRadius);
+        valueAnimator.setDuration(300);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                Integer value = (Integer) valueAnimator.getAnimatedValue();
+                radius = maxRadius - value;
+                invalidate();
+            }
+        });
+        valueAnimator.start();
     }
 
     public void boom(){
@@ -436,6 +506,9 @@ public class CircleCanvasView extends RelativeLayout implements Animation.Animat
 
             }
         }).start();
+
+
+
     }
 
 
